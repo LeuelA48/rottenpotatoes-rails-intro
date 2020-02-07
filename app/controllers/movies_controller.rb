@@ -14,8 +14,7 @@ class MoviesController < ApplicationController
     @all_ratings = ['G','PG','PG-13','R']
     @ratings_selected = @all_ratings
     
-    if(!session.has_key)
-      session[:ratings] = @all_ratings
+    session[:ratings] ||= @all_ratings
       
     session[:ratings] = params[:ratings] if params.keys.include? "ratings"
     @ratings_selected = session[:ratings].keys

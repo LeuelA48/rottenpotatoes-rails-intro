@@ -14,13 +14,19 @@ class MoviesController < ApplicationController
     @all_ratings = ['G','PG','PG-13','R']
     @ratings_selected = @all_ratings
     
-    session[:ratings] = params[:ratings] if (params.keys.include? "ratings")
+    session[:ratings] = params[:ratings] if params.keys.include? "ratings"
     @ratings_selected = session[:ratings].keys
     
     @sort_by = params[:sort] || session[:sort]
     session[:sort] = @sort_by
     
     @movies = Movie.where(:rating => @ratings_selected).order(@sort_by)
+    
+    if (params[:sort] != session[:sort])
+      flash.keep
+      redirect_to movies_path + "?sort=" + session[:sort]
+    end
+      
     if (@sort_by) == 'title'
       @css_title = 'hilite'
     elsif (@sort_by) == 'release_date'

@@ -13,9 +13,18 @@ class MoviesController < ApplicationController
   def index
     @all_ratings = ['G','PG','PG-13','R']
     @ratings_selected = @all_ratings
+    all_ratings_hash = Hash.new
+    all_ratings_hash.store("G",1)
+    all_ratings_hash.store("PG",1)
+    all_ratings_hash.store("PG-13",1)
+    all_ratings_hash.store("R",1)
+  
+    puts("session", session[:ratings])
     
-    session[:ratings] ||= @all_ratings
+    session[:ratings] ||= all_ratings_hash
     session[:sort] ||= "title"
+    
+    puts("session", session[:ratings])
       
     session[:ratings] = params[:ratings] if params.keys.include? "ratings"
     @ratings_selected = session[:ratings].keys
